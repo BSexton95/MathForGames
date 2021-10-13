@@ -38,19 +38,7 @@ namespace MathForGames
         /// </summary>
         private void Start()
         {
-            Scene scene = new Scene();
-            Actor actor = new Actor('P', new MathLibrary.Vector2 { X = 0, Y = 0 }, "Actor1", ConsoleColor.Cyan);
-            Actor actor2 = new Actor('A', new MathLibrary.Vector2 { X = 10, Y = 10 }, "Actor2", ConsoleColor.Green);
-            Player player = new Player('@', 5, 5, 1, "Player", ConsoleColor.DarkMagenta);
-
-            scene.AddActor(actor);
-            scene.AddActor(actor2);
-            scene.AddActor(player);
-
-            _currentSceneIndex = AddScene(scene);
-
             _scenes[_currentSceneIndex].Start();
-
             Console.CursorVisible = false;
         }
 
