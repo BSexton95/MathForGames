@@ -103,6 +103,9 @@ namespace MathForGames
         private void End()
         {
             _scenes[_currentSceneIndex].End();
+
+            while (Console.KeyAvailable)
+                Console.ReadKey(true);
         }
 
         /// <summary>
@@ -165,5 +168,13 @@ namespace MathForGames
             return true;
                
         }   
+
+        /// <summary>
+        /// Ends the application
+        /// </summary>
+        public static void CloseApplication()
+        {
+            _applicationShouldClose = true;
+        }
     }
 }
