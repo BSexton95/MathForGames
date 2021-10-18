@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using MathLibrary;
+using Raylib_cs;
 
 namespace MathForGames
 {
@@ -22,28 +23,24 @@ namespace MathForGames
             set { _velocity = value; }
         }
 
-        public Player(char icon, float x, float y, float speed, string name = "Actor", ConsoleColor color = ConsoleColor.White)
-            : base(icon, x, y, name, color)
+        public Player(char icon, float x, float y, float speed, Color color, string name = "Actor")
+            : base(icon, x, y, color, name)
         {
             _speed = speed;
         }
 
-        public override void Update()
+        public override void Update(float deltaTime)
         {
-            Vector2 moveDirection = new Vector2();
+            //Get the player input direction
+            int xDirection = -Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_A))
+                + Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_D));
+            int yDirection = -Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_W))
+                + Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_S));
 
-            ConsoleKey keyPressed = Engine.GetNextKey();
+            //Create a vector that stores the move input
+            Vector2 moveDirection = new Vector2(xDirection, yDirection);
 
-            if (keyPressed == ConsoleKey.A)
-                moveDirection = new Vector2 { X = -1 };
-            if (keyPressed == ConsoleKey.D)
-                moveDirection = new Vector2 { X = 1 };
-            if (keyPressed == ConsoleKey.W)
-                moveDirection = new Vector2 { Y = -1 };
-            if (keyPressed == ConsoleKey.S)
-                moveDirection = new Vector2 { Y = 1 };
-
-            Velocity = moveDirection * Speed;
+            Velocity = moveDirection * Speed * deltaTime;
 
             Position += Velocity;
         }
