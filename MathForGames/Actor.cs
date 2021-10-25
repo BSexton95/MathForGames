@@ -71,7 +71,23 @@ namespace MathForGames
 
         public virtual void OnCollision(Actor actor)
         {
-            Engine.CloseApplication();
+            
         }
+
+        /*
+        /// <summary>
+        /// Checks if this actor collided with another actor
+        /// </summary>
+        /// <param name="other">The actor to check collision against</param>
+        /// <returns>True if the distance between the actors is less than the radii of the two combined</returns>
+        public virtual bool CheckForCollision(Actor other)
+        {
+            //Return false if either actor doesn't have a collider attached
+            if (Collider == null || other.Collider == null)
+                return false;
+
+            return Collider.CheckCollision(other);
+        }
+        */
     }
 }
