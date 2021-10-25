@@ -18,6 +18,7 @@ namespace MathForGames
         private string _name;
         private Vector2 _position;
         private bool _started;
+        private Collider _collider;
 
         /// <summary>
         /// True if the start function has been called for this actor
@@ -36,6 +37,15 @@ namespace MathForGames
         public Icon Icon
         {
             get { return _icon; }
+        }
+
+        /// <summary>
+        /// The collider attached to this actor
+        /// </summary>
+        public Collider Collider
+        {
+            get { return _collider; }
+            set { _collider = value; }
         }
 
         public Actor(char icon, float x, float y, Color color, string name = "Actor") :
@@ -74,7 +84,6 @@ namespace MathForGames
             
         }
 
-        /*
         /// <summary>
         /// Checks if this actor collided with another actor
         /// </summary>
@@ -88,6 +97,5 @@ namespace MathForGames
 
             return Collider.CheckCollision(other);
         }
-        */
     }
 }

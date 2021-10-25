@@ -7,7 +7,7 @@ namespace MathLibrary
         public float X;
         public float Y;
 
-        public Vector2 (float x, float y)
+        public Vector2(float x, float y)
         {
             X = x;
             Y = y;
@@ -18,9 +18,9 @@ namespace MathLibrary
         /// </summary>
         public float Magnitude
         {
-            get 
-            { 
-                return (float)Math.Sqrt(X * X + Y * Y); 
+            get
+            {
+                return (float)Math.Sqrt(X * X + Y * Y);
             }
         }
 
@@ -46,6 +46,25 @@ namespace MathLibrary
                 return new Vector2();
 
             return this / Magnitude;
+        }
+
+        /// <param name="lhs">The left hand side of the operation</param>
+        /// <param name="rhs">The right hand side of the operation</param>
+        /// <returns>The dot product of the first vector on to the second </returns>
+        public static float DotProduct(Vector2 lhs, Vector2 rhs)
+        {
+            return (lhs.X * rhs.X) + (lhs.Y * rhs.Y);
+        }
+
+        /// <summary>
+        /// Finds the distance from the first vector to the second 
+        /// </summary>
+        /// <param name="lhs">The starting point</param>
+        /// <param name="rhs">The ending point</param>
+        /// <returns>A scalar representing the distance</returns>
+        public static float Distance(Vector2 lhs, Vector2 rhs)
+        {
+            return (rhs - lhs).Magnitude;
         }
 
         /// <summary>
@@ -98,7 +117,7 @@ namespace MathLibrary
         /// <param name="lhs">The left side of the comparison</param>
         /// <param name="rhs">The right side of the comparison</param>
         /// <returns>True if the x values of both vectors match and the y values match</returns>
-        public static bool operator ==(Vector2 lhs, Vector2 rhs) 
+        public static bool operator ==(Vector2 lhs, Vector2 rhs)
         {
             return lhs.X == rhs.X && lhs.Y == rhs.Y;
         }
