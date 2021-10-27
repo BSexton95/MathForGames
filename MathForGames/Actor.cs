@@ -6,19 +6,13 @@ using Raylib_cs;
 
 namespace MathForGames
 {
-    struct Icon
-    {
-        public char Symbol;
-        public Color Color;
-    }
-
     class Actor
     {
-        private Icon _icon;
         private string _name;
-        private Vector2 _position;
         private bool _started;
         private Collider _collider;
+        private Matrix3 _transform = Matrix3.Identity;
+        private Sprite _sprite;
 
         /// <summary>
         /// True if the start function has been called for this actor
@@ -30,13 +24,12 @@ namespace MathForGames
 
         public Vector2 Position
         {
-            get { return _position; }
-            set { _position = value; }
-        }
-
-        public Icon Icon
-        {
-            get { return _icon; }
+            get { return new Vector2(_transform.M02, _transform.M12); }
+            set 
+            { 
+                _transform.M02 = value.X;
+                _transform.M12 = value.Y;
+            }
         }
 
         /// <summary>
@@ -48,15 +41,23 @@ namespace MathForGames
             set { _collider = value; }
         }
 
-        public Actor(char icon, float x, float y, Color color, string name = "Actor") :
-            this(icon, new Vector2 { X = x, Y = y}, color, name) {}
-        
-
-        public Actor(char icon, Vector2 position, Color color, string name = "Actor")
+        public Sprite Sprite
         {
-            _icon = new Icon { Symbol = icon, Color = color };
-            _position = position;
+            get { return _sprite; }
+            set { _sprite = value; }
+        }
+
+        public Actor(float x, float y, string name = "Actor", string path = "") :
+            this( new Vector2 { X = x, Y = y}, name, path) {}
+
+
+        public Actor(Vector2 position, string name = "Actor", string path = "")
+        {
+            Position = position;
             _name = name;
+
+            if (path != "")
+                _sprite = new Sprite(path);
         }
 
         public virtual void Start()
@@ -71,7 +72,10 @@ namespace MathForGames
         
         public virtual void Draw()
         {
-            Raylib.DrawText(Icon.Symbol.ToString(), (int)Position.X, (int)Position.Y, 50, Icon.Color);
+            if (_sprite != null)
+                _sprite.Draw(_transform);
+
+            Collider.Draw();
         }
 
         public void End()
@@ -96,6 +100,12 @@ namespace MathForGames
                 return false;
 
             return Collider.CheckCollision(other);
+        }
+
+        public void SetScale(float x, float y)
+        {
+            _transform.M00 = x;
+            _transform.M11 = y;
         }
     }
 }

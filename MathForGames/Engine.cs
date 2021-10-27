@@ -67,7 +67,7 @@ namespace MathForGames
             AABBCollider playerBoxCollider = new AABBCollider(50, 50, player);
             player.Collider = playerCircleCollider;
 
-            Actor enemy = new Actor('A', 200, 5, Color.RED, "Enemy");
+            Actor enemy = new Actor('A', 200, 40, Color.RED, "Enemy");
             CircleCollider enemyCircleCollider = new CircleCollider(10, enemy);
             AABBCollider enemyBoxCollider = new AABBCollider(50, 50, enemy);
             enemy.Collider = enemyBoxCollider;
