@@ -12,6 +12,9 @@ namespace MathForGames
         private bool _started;
         private Collider _collider;
         private Matrix3 _transform = Matrix3.Identity;
+        private Matrix3 _translation = Matrix3.Identity;
+        private Matrix3 _rotation = Matrix3.Identity;
+        private Matrix3 _scale = Matrix3.Identity;
         private Sprite _sprite;
 
         /// <summary>
@@ -67,6 +70,7 @@ namespace MathForGames
 
         public virtual void Update(float deltaTime)
         {
+            _transform = _translation * _rotation * _scale;
             Console.WriteLine(_name + ": " + Position.X + ", " + Position.Y);
         } 
         
@@ -102,10 +106,64 @@ namespace MathForGames
             return Collider.CheckCollision(other);
         }
 
+        /// <summary>
+        /// Sets the position of the actor
+        /// </summary>
+        /// <param name="translationX">The new x position </param>
+        /// <param name="translationY">The new y position</param>
+        public void SetTranslation(float translationX, float translationY)
+        {
+
+        }
+
+        /// <summary>
+        /// Applies the given values to the current translation
+        /// </summary>
+        /// <param name="translationX">The amount to move on the x</param>
+        /// <param name="translationY">The amount to move on the y</param>
+        public void Translate(float translationX, float translationY)
+        {
+
+        }
+
+        /// <summary>
+        /// Set the rotation of the actor
+        /// </summary>
+        /// <param name="radians">The angle of the new rotation in radians</param>
+        public void SetRotation(float radians)
+        {
+
+        }
+
+        /// <summary>
+        /// Adds a rotation to the current transform's rotation
+        /// </summary>
+        /// <param name="radians">The angle in raidans</param>
+        public void Rotate(float radians)
+        {
+
+        }
+
+        /// <summary>
+        /// Sets the scale of the actor
+        /// </summary>
+        /// <param name="x">The value to scale on the x axis</param>
+        /// <param name="y">The value to scale on the y axis</param>
         public void SetScale(float x, float y)
         {
             _transform.M00 = x;
             _transform.M11 = y;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void Scale(float x, float y)
+        {
+
+        }
+
     }
 }
