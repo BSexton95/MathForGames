@@ -63,12 +63,14 @@ namespace MathForGames
             Scene scene = new Scene();
 
             Player player = new Player('@', 40, 40, 100, Color.VIOLET, "Player");
-            CircleCollider playerCollider = new CircleCollider(10, player);
-            player.Collider = playerCollider;
+            CircleCollider playerCircleCollider = new CircleCollider(10, player);
+            AABBCollider playerBoxCollider = new AABBCollider(50, 50, player);
+            player.Collider = playerCircleCollider;
 
             Actor enemy = new Actor('A', 200, 5, Color.RED, "Enemy");
-            CircleCollider enemyCollider = new CircleCollider(10, enemy);
-            enemy.Collider = enemyCollider;
+            CircleCollider enemyCircleCollider = new CircleCollider(10, enemy);
+            AABBCollider enemyBoxCollider = new AABBCollider(50, 50, enemy);
+            enemy.Collider = enemyBoxCollider;
 
             scene.AddActor(enemy);
             scene.AddActor(player);
@@ -93,7 +95,7 @@ namespace MathForGames
         private void Draw()
         {
             Raylib.BeginDrawing();
-            Raylib.ClearBackground(Color.BLACK);
+            Raylib.ClearBackground(Color.LIGHTGRAY);
 
             //Adds all actor icons to buffer
             _scenes[_currentSceneIndex].Draw();
