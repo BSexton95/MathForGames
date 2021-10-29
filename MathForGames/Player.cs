@@ -40,18 +40,25 @@ namespace MathForGames
             //Create a vector that stores the move input
             Vector2 moveDirection = new Vector2(xDirection, yDirection);
 
-
             Velocity = moveDirection.Normalized * Speed * deltaTime;
 
             Translate(Velocity.X, Velocity.Y);
 
+            //If player moves to the right...
             if (xDirection > 0)
+                //...sprite will rotate to the right
                 SetRotation(0);
+            //If player moves to the left...
             if (xDirection < 0)
+                //...sprite rotates to the left
                 SetRotation((float)Math.PI);
+            //If player moves up...
             if (yDirection > 0)
+                //...sprite will rotate up
                 SetRotation((float)Math.PI / 2);
+            //If player moves down...
             if (yDirection < 0)
+                //...sprite will rotate down.
                 SetRotation(3 * ((float)Math.PI / 2));
 
 
