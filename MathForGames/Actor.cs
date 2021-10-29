@@ -151,8 +151,7 @@ namespace MathForGames
         /// <param name="y">The value to scale on the y axis</param>
         public void SetScale(float x, float y)
         {
-            _transform.M00 = x;
-            _transform.M11 = y;
+            _scale = Matrix3.CreateScale(x, y);
         }
 
         /// <summary>
@@ -162,7 +161,7 @@ namespace MathForGames
         /// <param name="y"></param>
         public void Scale(float x, float y)
         {
-            _scale = Matrix3.CreateScale(x, y);
+            _scale *= Matrix3.CreateScale(x, y);
         }
 
     }

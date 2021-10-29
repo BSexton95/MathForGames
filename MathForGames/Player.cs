@@ -45,10 +45,16 @@ namespace MathForGames
 
             Translate(Velocity.X, Velocity.Y);
 
-            Scale(50, 50);
+            if (xDirection > 0)
+                SetRotation(0);
+            if (xDirection < 0)
+                SetRotation((float)Math.PI);
+            if (yDirection > 0)
+                SetRotation((float)Math.PI / 2);
+            if (yDirection < 0)
+                SetRotation(3 * ((float)Math.PI / 2));
 
 
-            Rotate(90);
 
             //Prints players position
             base.Update(deltaTime);
