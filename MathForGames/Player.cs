@@ -40,9 +40,15 @@ namespace MathForGames
             //Create a vector that stores the move input
             Vector2 moveDirection = new Vector2(xDirection, yDirection);
 
+
             Velocity = moveDirection.Normalized * Speed * deltaTime;
 
-            Position += Velocity;
+            Translate(Velocity.X, Velocity.Y);
+
+            Scale(50, 50);
+
+
+            Rotate(90);
 
             //Prints players position
             base.Update(deltaTime);
