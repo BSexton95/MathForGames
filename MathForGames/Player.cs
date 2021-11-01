@@ -55,12 +55,12 @@ namespace MathForGames
             //If player moves up...
             if (yDirection > 0)
                 //...sprite will rotate up
-                SetRotation((float)Math.PI / 2);
+                SetRotation(3 * ((float)Math.PI / 2));
             //If player moves down...
             if (yDirection < 0)
                 //...sprite will rotate down.
-                SetRotation(3 * ((float)Math.PI / 2));
-
+                SetRotation((float)Math.PI / 2);
+            
 
 
             //Prints players position

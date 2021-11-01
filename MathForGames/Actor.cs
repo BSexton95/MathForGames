@@ -25,14 +25,25 @@ namespace MathForGames
             get { return _started; }
         }
 
+        /// <summary>
+        /// Position of actor
+        /// </summary>
         public Vector2 Position
         {
-            get { return new Vector2(_transform.M02, _transform.M12); }
+            get { return new Vector2(_translation.M02, _translation.M12); }
             set 
-            { 
-                _transform.M02 = value.X;
-                _transform.M12 = value.Y;
+            {
+                SetTranslation(value.X, value.Y);
             }
+        }
+
+        /// <summary>
+        /// Size of actor
+        /// </summary>
+        public Vector2 Size
+        {
+            get { return new Vector2(_scale.M00, _scale.M11); }
+            set { SetScale(value.X, value.Y); }
         }
 
         /// <summary>
@@ -44,6 +55,9 @@ namespace MathForGames
             set { _collider = value; }
         }
 
+        /// <summary>
+        /// The sprite attached to the actor
+        /// </summary>
         public Sprite Sprite
         {
             get { return _sprite; }
@@ -155,10 +169,10 @@ namespace MathForGames
         }
 
         /// <summary>
-        /// 
+        /// Scales the actor by the given amount
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="x">The value to scale on the x axis</param>
+        /// <param name="y">The value to scale on the y axis</param>
         public void Scale(float x, float y)
         {
             _scale *= Matrix3.CreateScale(x, y);
