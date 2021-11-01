@@ -44,24 +44,8 @@ namespace MathForGames
 
             Translate(Velocity.X, Velocity.Y);
 
-            //If player moves to the right...
-            if (xDirection > 0)
-                //...sprite will rotate to the right
-                SetRotation(0);
-            //If player moves to the left...
-            if (xDirection < 0)
-                //...sprite rotates to the left
-                SetRotation((float)Math.PI);
-            //If player moves up...
-            if (yDirection > 0)
-                //...sprite will rotate up
-                SetRotation(3 * ((float)Math.PI / 2));
-            //If player moves down...
-            if (yDirection < 0)
-                //...sprite will rotate down.
-                SetRotation((float)Math.PI / 2);
-            
-
+            if(Velocity.Magnitude > 0)
+                Forward = Velocity.Normalized;
 
             //Prints players position
             base.Update(deltaTime);

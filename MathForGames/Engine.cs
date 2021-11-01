@@ -80,6 +80,7 @@ namespace MathForGames
             //Enemy's Collider
             CircleCollider enemyCircleCollider = new CircleCollider(10, enemy);
             AABBCollider enemyBoxCollider = new AABBCollider(50, 50, enemy);
+            enemy.Forward = new Vector2(700, 900);
             enemy.Collider = enemyBoxCollider;
             //Add enemy to scene
             scene.AddActor(enemy);

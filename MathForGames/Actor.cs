@@ -11,6 +11,7 @@ namespace MathForGames
         private string _name;
         private bool _started;
         private Collider _collider;
+        private Vector2 _forward = new Vector2(1, 0);
         private Matrix3 _transform = Matrix3.Identity;
         private Matrix3 _translation = Matrix3.Identity;
         private Matrix3 _rotation = Matrix3.Identity;
@@ -44,6 +45,16 @@ namespace MathForGames
         {
             get { return new Vector2(_scale.M00, _scale.M11); }
             set { SetScale(value.X, value.Y); }
+        }
+
+        public Vector2 Forward
+        {
+            get { return new Vector2(_rotation.M00, _rotation.M10); }
+            set 
+            { 
+                Vector2 point = value.Normalized + Position;
+                LookAt(point);
+            }
         }
 
         /// <summary>
@@ -178,5 +189,34 @@ namespace MathForGames
             _scale *= Matrix3.CreateScale(x, y);
         }
 
+        /// <summary>
+        /// Rotates the actor to face the given position
+        /// </summary>
+        /// <param name="position">The position the actor should be looking towards</param>
+        public void LookAt(Vector2 position)
+        {
+            //Find the direction the actor should look in
+            Vector2 direction = (position - Position).Normalized;
+
+            //Use the dot product to find the angle the actor needs to rotate
+            float dotProd = Vector2.DotProduct(direction, Forward);
+
+            if (dotProd > 1)
+                dotProd = 1;
+
+            float angle = (float)Math.Acos(dotProd);
+
+            //Find the perpindiculer vector to the direction
+            Vector2 perpDirection = new Vector2(direction.Y, -direction.X);
+
+            //Find the dot product of the perpindicular vector and the current forward
+            float perpDot = Vector2.DotProduct(perpDirection, Forward);
+
+            //If the result isn't 0, use it to change the sign of the angle to be either positive or negative
+            if (perpDot != 0)
+                angle *= -perpDot / Math.Abs(perpDot);
+
+            Rotate(angle);
+        }
     }
 }
