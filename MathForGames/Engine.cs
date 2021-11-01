@@ -73,6 +73,24 @@ namespace MathForGames
             //Add player to scene
             scene.AddActor(player);
 
+            /////////////////Testing matrix hierarchie//////////////////////
+            Actor parent = new Actor(70, 70, "Parent", "Images/player.png");
+            parent.SetScale(50, 50);
+            parent.SetTranslation(200, 200);
+            CircleCollider parentCircleCollider = new CircleCollider(20, parent);
+            parent.Collider = parentCircleCollider;
+            //Child
+            Actor child = new Actor(1, 1, "Child", "Images/enemy.png");
+            //child.SetScale(50, 50);
+            child.SetTranslation(1, 1);
+            parent.AddChild(child);
+            //player.AddChild(child);
+
+            scene.AddActor(parent);
+            scene.AddActor(child);
+            /////////////////Testing matrix hierarchie//////////////////////
+
+
             //Enemy
             Actor enemy = new Actor(400, 400, "Enemy", "Images/enemy.png");
             enemy.SetScale(50, 50);

@@ -12,10 +12,13 @@ namespace MathForGames
         private bool _started;
         private Collider _collider;
         private Vector2 _forward = new Vector2(1, 0);
-        private Matrix3 _transform = Matrix3.Identity;
+        private Matrix3 _globalTransform = Matrix3.Identity;
+        private Matrix3 _localTransform = Matrix3.Identity;
         private Matrix3 _translation = Matrix3.Identity;
         private Matrix3 _rotation = Matrix3.Identity;
         private Matrix3 _scale = Matrix3.Identity;
+        private Actor[] _children = new Actor[0];
+        private Actor _parent;
         private Sprite _sprite;
 
         /// <summary>
@@ -29,13 +32,45 @@ namespace MathForGames
         /// <summary>
         /// Position of actor
         /// </summary>
-        public Vector2 Position
+        public Vector2 LocalPosition
         {
             get { return new Vector2(_translation.M02, _translation.M12); }
-            set 
+            private set 
             {
                 SetTranslation(value.X, value.Y);
             }
+        }
+
+        public Vector2 WorldPosition
+        {
+            get { return new Vector2(GlobalTransform.M02, GlobalTransform.M12); }
+            private set
+            {
+                SetTranslation(value.X, value.Y);
+            }
+        }
+
+        public Matrix3 GlobalTransform
+        {
+            get { return _globalTransform; }
+            set { _globalTransform = value; }
+        }
+
+        public Matrix3 LocalTransform
+        {
+            get { return _localTransform; } 
+            set { _localTransform = value; }
+        }
+
+        public Actor Parent
+        {
+            get { return _parent; } 
+            set { _parent = value; }
+        }
+
+        public Actor[] Children
+        {
+            get { return _children; }
         }
 
         /// <summary>
@@ -52,7 +87,7 @@ namespace MathForGames
             get { return new Vector2(_rotation.M00, _rotation.M10); }
             set 
             { 
-                Vector2 point = value.Normalized + Position;
+                Vector2 point = value.Normalized + LocalPosition;
                 LookAt(point);
             }
         }
@@ -81,11 +116,92 @@ namespace MathForGames
 
         public Actor(Vector2 position, string name = "Actor", string path = "")
         {
-            SetTranslation(Position.X, Position.Y);
+            SetTranslation(LocalPosition.X, LocalPosition.Y);
             _name = name;
 
             if (path != "")
                 _sprite = new Sprite(path);
+        }
+
+        public void UpdateTransforms()
+        {
+            if (_parent != null)
+            {
+                GlobalTransform = _parent.GlobalTransform * LocalTransform;
+            }
+            else
+            {
+                GlobalTransform = LocalTransform;
+            }
+
+        }
+
+        /// <summary>
+        /// Adds a child to the actor array list
+        /// </summary>
+        /// <param name="child">The child to be added to the array</param>
+        public void AddChild(Actor child)
+        {
+            //Create a temporary array larger than the original
+            Actor[] tempArray = new Actor[_children.Length + 1];
+
+            //Copy all values from the original array into the temporary array
+            for (int i = 0; i < _children.Length; i++)
+            {
+                tempArray[i] = _children[i];
+            }
+
+            //Add the new child to the end of the new array
+            tempArray[_children.Length] = child;
+
+            //Set the old array to be the new array
+            _children = tempArray;
+
+            child.Parent = this;
+        }
+
+        /// <summary>
+        /// Removes a child from the actor array list
+        /// </summary>
+        /// <param name="child">The child to be removed from the array</param>
+        /// <returns>True if child was successfuly removed from the array</returns>
+        public bool RemoveChild(Actor child)
+        {
+            //Create a variable to store if the removal was successful
+            bool actorRemoved = false;
+
+            //Create a new array that is smaller than the original
+            Actor[] tempArray = new Actor[_children.Length - 1];
+
+            //Copy all values except the child we don't want into the new array
+            int j = 0;
+            for (int i = 0; i < tempArray.Length; i++)
+            {
+                //If the child that the loop is on is not the one to remove...
+                if (_children[i] != child)
+                {
+                    //...add the child into the new array and increment the temp array counter
+                    tempArray[j] = _children[i];
+                    j++;
+                }
+                //Otherwise if this child is the one to remove...
+                else
+                {
+                    //...set childRemoved to true
+                    actorRemoved = true;
+                }
+            }
+
+            //If the child removal was successful...
+            if (actorRemoved)
+            {
+                //...set the old array to be the new array
+                _children = tempArray;
+            }
+
+            child.Parent = null;
+
+            return actorRemoved;
         }
 
         public virtual void Start()
@@ -95,16 +211,18 @@ namespace MathForGames
 
         public virtual void Update(float deltaTime)
         {
-            _transform = _translation * _rotation * _scale;
-            Console.WriteLine(_name + ": " + Position.X + ", " + Position.Y);
+            UpdateTransforms();
+
+            //_globalTransform = _translation * _rotation * _scale;
+            //Console.WriteLine(_name + ": " + LocalPosition.X + ", " + LocalPosition.Y);
         } 
         
         public virtual void Draw()
         {
             if (_sprite != null)
-                _sprite.Draw(_transform);
+                _sprite.Draw(GlobalTransform);
 
-            Collider.Draw();
+            //Collider.Draw();
         }
 
         public void End()
@@ -196,7 +314,7 @@ namespace MathForGames
         public void LookAt(Vector2 position)
         {
             //Find the direction the actor should look in
-            Vector2 direction = (position - Position).Normalized;
+            Vector2 direction = (position - LocalPosition).Normalized;
 
             //Use the dot product to find the angle the actor needs to rotate
             float dotProd = Vector2.DotProduct(direction, Forward);
