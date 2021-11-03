@@ -61,7 +61,7 @@ namespace MathForGames
             Raylib.SetTargetFPS(0);
 
             Scene scene = new Scene();
-
+            
             //Player
             Player player = new Player(40, 40, 100, "Player", "Images/player.png");
             player.SetScale(50, 50);
@@ -71,26 +71,38 @@ namespace MathForGames
             AABBCollider playerBoxCollider = new AABBCollider(50, 50, player);
             player.Collider = playerCircleCollider;
             //Add player to scene
-            scene.AddActor(player);
+            
+            
 
             /////////////////Testing matrix hierarchie//////////////////////
-            Actor parent = new Actor(70, 70, "Parent", "Images/player.png");
-            parent.SetScale(50, 50);
-            parent.SetTranslation(200, 200);
-            CircleCollider parentCircleCollider = new CircleCollider(20, parent);
-            parent.Collider = parentCircleCollider;
+            //Parent
+            Actor parent = new Actor(100, 100, "Parent", "Images/sun.png");
+            parent.SetScale(100, 100);
+            parent.SetTranslation(375, 200);
+
             //Child
-            Actor child = new Actor(1, 1, "Child", "Images/enemy.png");
-            //child.SetScale(50, 50);
+            Actor child = new Actor(1, 1, "Child", "Images/rick.png");
+            child.SetScale(.7f, .7f);
             child.SetTranslation(1, 1);
-            parent.AddChild(child);
-            //player.AddChild(child);
 
-            scene.AddActor(parent);
+            
+            //Child2
+            Actor child2 = new Actor(.8f, .8f, "Child2", "Images/morty.png");
+            child2.SetScale(.5f, .5f);
+            
+            
+            child.AddChild(child2);
+            parent.AddChild(child);
+
+
+            
             scene.AddActor(child);
+            scene.AddActor(child2);
+            scene.AddActor(parent);
+            scene.AddActor(player);
             /////////////////Testing matrix hierarchie//////////////////////
 
-
+            /*
             //Enemy
             Actor enemy = new Actor(400, 400, "Enemy", "Images/enemy.png");
             enemy.SetScale(50, 50);
@@ -102,8 +114,8 @@ namespace MathForGames
             enemy.Collider = enemyBoxCollider;
             //Add enemy to scene
             scene.AddActor(enemy);
+            */
 
-            
 
             _currentSceneIndex = AddScene(scene);
             _scenes[_currentSceneIndex].Start();
@@ -125,7 +137,7 @@ namespace MathForGames
         private void Draw()
         {
             Raylib.BeginDrawing();
-            Raylib.ClearBackground(Color.LIGHTGRAY);
+            Raylib.ClearBackground(Color.SKYBLUE);
 
             //Adds all actor icons to buffer
             _scenes[_currentSceneIndex].Draw();

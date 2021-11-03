@@ -7,6 +7,9 @@
 
   <ItemGroup>
     <None Remove="enemy.png" />
+    <None Remove="Images\morty.png" />
+    <None Remove="Images\rick.png" />
+    <None Remove="Images\sun.png" />
     <None Remove="player.png" />
   </ItemGroup>
 
@@ -14,7 +17,16 @@
     <Content Include="Images\enemy.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\morty.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\player.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\rick.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\sun.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

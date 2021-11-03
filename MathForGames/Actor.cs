@@ -116,7 +116,7 @@ namespace MathForGames
 
         public Actor(Vector2 position, string name = "Actor", string path = "")
         {
-            SetTranslation(LocalPosition.X, LocalPosition.Y);
+            SetTranslation(position.X, position.Y);
             _name = name;
 
             if (path != "")
@@ -212,9 +212,12 @@ namespace MathForGames
         public virtual void Update(float deltaTime)
         {
             UpdateTransforms();
+            if(_name != "Player")
+                Rotate(deltaTime);
 
-            //_globalTransform = _translation * _rotation * _scale;
-            //Console.WriteLine(_name + ": " + LocalPosition.X + ", " + LocalPosition.Y);
+            _localTransform = _translation * _rotation * _scale;
+
+            Console.WriteLine(_name + ": " + LocalPosition.X + ", " + LocalPosition.Y);
         } 
         
         public virtual void Draw()
