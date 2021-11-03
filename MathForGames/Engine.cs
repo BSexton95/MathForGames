@@ -14,6 +14,7 @@ namespace MathForGames
         private static int _currentSceneIndex;
         private Scene[] _scenes = new Scene[0];
         private Stopwatch _stopWatch = new Stopwatch();
+        private Camera3D _camera = new Camera3D();
 
         /// <summary>
         /// Called to begin the application
@@ -50,6 +51,18 @@ namespace MathForGames
         }
 
         /// <summary>
+        /// Initializes the camera
+        /// </summary>
+        private void InitializeCamera()
+        {
+            _camera.position = new System.Numerics.Vector3(0, 10, 10); //Camera position
+            _camera.target = new System.Numerics.Vector3(0, 0, 0); //Point the camera is focused on
+            _camera.up = new System.Numerics.Vector3(0, 1, 0); //Camera up vector (rotation towards target)
+            _camera.fovy = 45; //Camera field of view on the Y
+            _camera.projection = CameraProjection.CAMERA_PERSPECTIVE; //Camera mode type
+        }
+
+        /// <summary>
         /// Called when the application starts
         /// </summary>
         private void Start()
@@ -60,20 +73,23 @@ namespace MathForGames
             Raylib.InitWindow(800, 450, "Math for Games");
             Raylib.SetTargetFPS(0);
 
+            //Call initialize camera function
+            InitializeCamera();
+
             Scene scene = new Scene();
             
             //Player
-            Player player = new Player(40, 40, 100, "Player", "Images/player.png");
-            player.SetScale(50, 50);
-            player.SetTranslation(40, 40);
+            Player player = new Player(0, 0, 1, "Player", Shape.CUBE);
+            player.SetScale(10, 10, 10);
+            /*
             //Player's collider
             CircleCollider playerCircleCollider = new CircleCollider(20, player);
             AABBCollider playerBoxCollider = new AABBCollider(50, 50, player);
             player.Collider = playerCircleCollider;
             //Add player to scene
-            
-            
+            */
 
+            /*
             /////////////////Testing matrix hierarchie//////////////////////
             //Parent
             Actor parent = new Actor(100, 100, "Parent", "Images/sun.png");
@@ -101,7 +117,7 @@ namespace MathForGames
             scene.AddActor(parent);
             scene.AddActor(player);
             /////////////////Testing matrix hierarchie//////////////////////
-
+            */
             /*
             //Enemy
             Actor enemy = new Actor(400, 400, "Enemy", "Images/enemy.png");
@@ -116,7 +132,7 @@ namespace MathForGames
             scene.AddActor(enemy);
             */
 
-
+            scene.AddActor(player);
             _currentSceneIndex = AddScene(scene);
             _scenes[_currentSceneIndex].Start();
 
@@ -137,11 +153,17 @@ namespace MathForGames
         private void Draw()
         {
             Raylib.BeginDrawing();
-            Raylib.ClearBackground(Color.SKYBLUE);
+            Raylib.BeginMode3D(_camera);
+
+            //Color of the background
+            Raylib.ClearBackground(Color.RAYWHITE);
+            //Draw a grid to console
+            Raylib.DrawGrid(50, 1);
 
             //Adds all actor icons to buffer
             _scenes[_currentSceneIndex].Draw();
 
+            Raylib.EndMode3D();
             Raylib.EndDrawing();
         }
 

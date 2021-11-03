@@ -41,7 +41,7 @@ namespace MathLibrary
         /// <summary>
         /// Changes this vector to have a magnitude that is equal to one
         /// </summary>
-        /// <returns>The result of the normalization. Returns an emply vector if the magnitude is zero</returns>
+        /// <returns>The result of the normalization. Returns an empty vector if the magnitude is zero</returns>
         public Vector3 Normalize()
         {
             if (Magnitude == 0)
@@ -70,7 +70,8 @@ namespace MathLibrary
         }
 
         /// <summary>
-        /// Adds the x value of the second vector to the first, and adds the y value of the second vector to the first.
+        /// Adds the x value of the second vector to the first, adds the y value of the second vector to the first,
+        /// and adds the z value of the second vector to the firs.
         /// </summary>
         /// <param name="lhs">The vector that is increasing</param>
         /// <param name="rhs">The vector used to increase the 1st vectre</param>
@@ -81,7 +82,8 @@ namespace MathLibrary
         }
 
         ///<summary>
-        /// Subtracts the x value of the second vector to the first, and Sibtracts the y value of the second vector to the first.
+        /// Subtracts the x value of the second vector to the first, subtracts the y value of the second vector to the first,
+        /// and subracts the z value of the second vector to the first.
         /// </summary>
         /// <param name="lhs">The vector that is being subtracted from</param>
         /// <param name="rhs">The vector used to subtract from the first</param>
@@ -92,7 +94,7 @@ namespace MathLibrary
         }
 
         /// <summary>
-        /// Multiplies the vector's x and y values by the scalar
+        /// Multiplies the vector's x, y, and z values by the scalar
         /// </summary>
         /// <param name="vector">The vector that is being scaled</param>
         /// <param name="scalar">The value to scale the vector by</param>
@@ -103,7 +105,7 @@ namespace MathLibrary
         }
 
         /// <summary>
-        /// Divides the vector's x and y values by the scalar given
+        /// Divides the vector's x, y, and z values by the scalar given
         /// </summary>
         /// <param name="vector">The vector that is being scaled</param>
         /// <param name="scalar">The value to scale the vector by</param>
@@ -114,22 +116,22 @@ namespace MathLibrary
         }
 
         /// <summary>
-        /// Compares the x and y values of two vectors
+        /// Compares the x, y, and z values of two vectors
         /// </summary>
         /// <param name="lhs">The left side of the comparison</param>
         /// <param name="rhs">The right side of the comparison</param>
-        /// <returns>True if the x values of both vectors match and the y values match</returns>
+        /// <returns>True if the x values of both vectors match, the y values match, and the z values match</returns>
         public static bool operator ==(Vector3 lhs, Vector3 rhs)
         {
             return lhs.X == rhs.X && lhs.Y == rhs.Y && lhs.Z == rhs.Z;
         }
 
         /// <summary>
-        /// Compares the x and y values of two vectors
+        /// Compares the x, y, and z values of two vectors
         /// </summary>
         /// <param name="lhs">The left side of the comparison</param>
         /// <param name="rhs">The right side of the comparison</param>
-        /// <returns>True if the x values of both vectors don't match and the y values don't match</returns>
+        /// <returns>True if the x values of both vectors don't match, the y values don't match, and the z values match</returns>
         public static bool operator !=(Vector3 lhs, Vector3 rhs)
         {
             return lhs.X != rhs.X || lhs.Y != rhs.Y || lhs.Z != rhs.Z;
