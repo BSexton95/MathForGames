@@ -35,31 +35,46 @@ namespace MathForGames
         public Vector2 LocalPosition
         {
             get { return new Vector2(_translation.M02, _translation.M12); }
-            private set 
+            set 
             {
                 SetTranslation(value.X, value.Y);
             }
         }
 
+        /// <summary>
+        /// The position of this actor in the world
+        /// </summary>
         public Vector2 WorldPosition
         {
-            get { return new Vector2(GlobalTransform.M02, GlobalTransform.M12); }
-            private set
+            //return the global transform's T column
+            get { return new Vector2(_globalTransform.M02, _globalTransform.M12); }
+            set
             {
-                SetTranslation(value.X, value.Y);
+                //If the actor has a parent...
+                if (Parent != null)
+                {
+                    //...convert the world cooridinates into local coordiniates and translate the actor
+                    float xOffSet = (value.X - Parent.WorldPosition.X) / new Vector2(_globalTransform.M00, _globalTransform.M10).Magnitude;
+                    float yOffSet = (value.Y - Parent.WorldPosition.Y) / new Vector2(_globalTransform.M10, _globalTransform.M11).Magnitude;
+                    SetTranslation(xOffSet, yOffSet);
+                }
+                //If this actor doesn't have a parent...
+                else
+                    //...set local position to be the given value
+                    LocalPosition = value;
             }
         }
 
         public Matrix3 GlobalTransform
         {
             get { return _globalTransform; }
-            set { _globalTransform = value; }
+            private set { _globalTransform = value; }
         }
 
         public Matrix3 LocalTransform
         {
             get { return _localTransform; } 
-            set { _localTransform = value; }
+            private set { _localTransform = value; }
         }
 
         public Actor Parent
@@ -78,7 +93,13 @@ namespace MathForGames
         /// </summary>
         public Vector2 Size
         {
-            get { return new Vector2(_scale.M00, _scale.M11); }
+            get 
+            {
+                float xScale = new Vector2(_scale.M00, _scale.M10).Magnitude;
+                float yScale = new Vector2(_scale.M01, _scale.M11).Magnitude;
+
+                return new Vector2(xScale, yScale); 
+            }
             set { SetScale(value.X, value.Y); }
         }
 
@@ -123,14 +144,21 @@ namespace MathForGames
                 _sprite = new Sprite(path);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void UpdateTransforms()
         {
-            if (_parent != null)
+            //If
+            if (Parent != null)
             {
-                GlobalTransform = _parent.GlobalTransform * LocalTransform;
+                //...
+                GlobalTransform = Parent.GlobalTransform * LocalTransform;
             }
+            //Otherwise
             else
             {
+                //...
                 GlobalTransform = LocalTransform;
             }
 
@@ -154,10 +182,11 @@ namespace MathForGames
             //Add the new child to the end of the new array
             tempArray[_children.Length] = child;
 
+            //Set the parent of the actor to be this actor
+            child.Parent = this;
+
             //Set the old array to be the new array
             _children = tempArray;
-
-            child.Parent = this;
         }
 
         /// <summary>
@@ -197,9 +226,10 @@ namespace MathForGames
             {
                 //...set the old array to be the new array
                 _children = tempArray;
-            }
 
-            child.Parent = null;
+                //Set the parent of the child to be nothing
+                child.Parent = null;
+            }
 
             return actorRemoved;
         }
@@ -209,10 +239,18 @@ namespace MathForGames
             _started = true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="deltaTime"></param>
         public virtual void Update(float deltaTime)
         {
+            //Call funtion to update transforms
             UpdateTransforms();
+
+            //If the actor is not the player...
             if(_name != "Player")
+                //...rotate the actor
                 Rotate(deltaTime);
 
             _localTransform = _translation * _rotation * _scale;
