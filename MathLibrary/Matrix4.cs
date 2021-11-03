@@ -153,6 +153,12 @@ namespace MathForGames
             newMatrix4.M23 = (lhs.M20 * rhs.M03) + (lhs.M21 * rhs.M13) + (lhs.M22 * rhs.M33) + (lhs.M23 * rhs.M33);
             //Row4, Column1
             newMatrix4.M30 = (lhs.M30 * rhs.M00) + (lhs.M31 * rhs.M10) + (lhs.M32 * rhs.M20) + (lhs.M33 * rhs.M30);
+            //Row4, Column2
+            newMatrix4.M31 = (lhs.M30 * rhs.M01) + (lhs.M31 * rhs.M11) + (lhs.M32 * rhs.M21) + (lhs.M33 * rhs.M31);
+            //Row4, Column3
+            newMatrix4.M32 = (lhs.M30 * rhs.M02) + (lhs.M31 * rhs.M12) + (lhs.M32 * rhs.M22) + (lhs.M33 * rhs.M32);
+            //Row4, Column4
+            newMatrix4.M33 = (lhs.M30 * rhs.M03) + (lhs.M31 * rhs.M13) + (lhs.M32 * rhs.M23) + (lhs.M33 * rhs.M33);
 
             return newMatrix4;
         }
