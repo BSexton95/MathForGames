@@ -79,7 +79,7 @@ namespace MathForGames
             Scene scene = new Scene();
             
             //Player
-            Player player = new Player(0, 0, 1, "Player", Shape.CUBE);
+            Player player = new Player(0, 0, 50, "Player", Shape.SPHERE);
             player.SetScale(1, 1, 1);
             /*
             //Player's collider

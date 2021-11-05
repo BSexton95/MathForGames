@@ -143,7 +143,7 @@ namespace MathForGames
         /// </summary>
         public void UpdateTransforms()
         {
-            //If
+            //If...
             if (Parent != null)
             {
                 //...
@@ -152,7 +152,7 @@ namespace MathForGames
             //Otherwise
             else
             {
-                //...
+                //...set 
                 GlobalTransform = LocalTransform;
             }
 
@@ -239,11 +239,12 @@ namespace MathForGames
         /// <param name="deltaTime"></param>
         public virtual void Update(float deltaTime)
         {
-
+            //Multiplys the translation matrix with the rotation matrix and scale matrix to get the local transform
             _localTransform = _translation * _rotation * _scale;
 
             //Call funtion to update transforms
             UpdateTransforms();
+
             /*
             //If the actor is not the player...
             if(_name != "Player")

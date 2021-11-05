@@ -54,7 +54,7 @@ namespace MathLibrary
 
         /// <param name="lhs">The left hand side of the operation</param>
         /// <param name="rhs">The right hand side of the operation</param>
-        /// <returns>The dot product of the first vector on to the second </returns>
+        /// <returns>The dot product of the first vector on to the second</returns>
         public static float DotProduct(Vector4 lhs, Vector4 rhs)
         {
             return (lhs.X * rhs.X) + (lhs.Y * rhs.Y) + (lhs.Z * rhs.Z);
