@@ -80,7 +80,7 @@ namespace MathForGames
             
             //Player
             Player player = new Player(0, 0, 1, "Player", Shape.CUBE);
-            player.SetScale(10, 10, 10);
+            player.SetScale(1, 1, 1);
             /*
             //Player's collider
             CircleCollider playerCircleCollider = new CircleCollider(20, player);
@@ -109,8 +109,6 @@ namespace MathForGames
             
             child.AddChild(child2);
             parent.AddChild(child);
-
-
             
             scene.AddActor(child);
             scene.AddActor(child2);

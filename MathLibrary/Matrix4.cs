@@ -69,9 +69,9 @@ namespace MathForGames
         /// <returns></returns>
         public static Matrix4 CreateTranslation(float x, float y, float z)
         {
-            return new Matrix4(1, 0, x, 0,
-                               0, 1, y, 0,
-                               0, 0, z, 0,
+            return new Matrix4(1, 0, 0, x,
+                               0, 1, 0, y,
+                               0, 0, 1, z,
                                0, 0, 0, 1);
         }
 
@@ -150,7 +150,7 @@ namespace MathForGames
             //Row3, Column3
             newMatrix4.M22 = (lhs.M20 * rhs.M02) + (lhs.M21 * rhs.M12) + (lhs.M22 * rhs.M22) + (lhs.M23 * rhs.M32);
             //Row3, Column4
-            newMatrix4.M23 = (lhs.M20 * rhs.M03) + (lhs.M21 * rhs.M13) + (lhs.M22 * rhs.M33) + (lhs.M23 * rhs.M33);
+            newMatrix4.M23 = (lhs.M20 * rhs.M03) + (lhs.M21 * rhs.M13) + (lhs.M22 * rhs.M23) + (lhs.M23 * rhs.M33);
             //Row4, Column1
             newMatrix4.M30 = (lhs.M30 * rhs.M00) + (lhs.M31 * rhs.M10) + (lhs.M32 * rhs.M20) + (lhs.M33 * rhs.M30);
             //Row4, Column2
