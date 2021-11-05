@@ -374,11 +374,23 @@ namespace MathForGames
         /// Rotates the actor to face the given position
         /// </summary>
         /// <param name="position">The position the actor should be looking towards</param>
-        public void LookAt(Vector2 position)
-        {/*
+        public void LookAt(Vector3 position)
+        {
             //Find the direction the actor should look in
-            Vector2 direction = (position - LocalPosition).Normalized;
+            Vector3 direction = (position - WorldPosition).Normalized;
 
+            if (direction.Magnitude == 0)
+                direction = new Vector3(0, 0, 1);
+
+            Vector3 alignAxis = new Vector3(0, 1, 0);
+
+            Vector3 newYAxis = new Vector3(0, 1, 0);
+            Vector3 newXAxis = new Vector3(1, 0, 0);
+
+
+
+            //////////////////////////////////2D Look at function/////////////////////////////
+            /*
             //Use the dot product to find the angle the actor needs to rotate
             float dotProd = Vector2.DotProduct(direction, Forward);
 
