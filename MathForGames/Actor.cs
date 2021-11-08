@@ -26,6 +26,12 @@ namespace MathForGames
         private Actor[] _children = new Actor[0];
         private Actor _parent;
         private Shape _shape;
+        private Color _color;
+
+        public Color ShapeColor
+        {
+            get { return _color; }
+        }
 
         /// <summary>
         /// True if the start function has been called for this actor
@@ -234,7 +240,7 @@ namespace MathForGames
         }
 
         /// <summary>
-        /// 
+        /// Updates all transforms
         /// </summary>
         /// <param name="deltaTime"></param>
         public virtual void Update(float deltaTime)
@@ -259,27 +265,30 @@ namespace MathForGames
         public virtual void Draw()
         {
             System.Numerics.Vector3 position = new System.Numerics.Vector3(WorldPosition.X, WorldPosition.Y, WorldPosition.Z);
+            System.Numerics.Vector3 endPos = new System.Numerics.Vector3(WorldPosition.X + Forward.X * 50, WorldPosition.Y + Forward.Y * 50, WorldPosition.Z + Forward.Z * 50);
             switch (_shape)
             {
                 case Shape.CUBE:
                     float sizeX = new Vector3(GlobalTransform.M00, GlobalTransform.M10, GlobalTransform.M20).Magnitude;
                     float sizeY = new Vector3(GlobalTransform.M01, GlobalTransform.M11, GlobalTransform.M21).Magnitude;
                     float sizeZ = new Vector3(GlobalTransform.M02, GlobalTransform.M12, GlobalTransform.M22).Magnitude;
-                    Raylib.DrawCube(position, sizeX, sizeY, sizeZ, Color.BLUE);
+                    Raylib.DrawCube(position, sizeX, sizeY, sizeZ, ShapeColor);
                     break;
                 case Shape.SPHERE:
                     sizeX = new Vector3(GlobalTransform.M00, GlobalTransform.M10, GlobalTransform.M20).Magnitude;
-                    Raylib.DrawSphere(position, sizeX, Color.BLUE);
+                    Raylib.DrawSphere(position, sizeX, ShapeColor);
                     break;
                     /*
                 case Shape.CUBE:
                     Raylib.DrawCube(position, Size.X, Size.Y, Size.Z, Color.Blue);
                     break;
                 case Shape.SPHERE:
-                    Raylib.DrawSphere(position, Size.X, Color.BLUE);
+                    Raylib.DrawSphere(position, Size.X, ShapeColor);
                     break;
                     */
             }
+            //Draw a line to represent the actors forward vector
+            Raylib.DrawLine3D(position, endPos, Color.RED);
         }
 
         public void End()
@@ -379,15 +388,54 @@ namespace MathForGames
             //Find the direction the actor should look in
             Vector3 direction = (position - WorldPosition).Normalized;
 
+            //If the direction has a magnitude zero...
             if (direction.Magnitude == 0)
+                //...set the direction vector to be the default forward
                 direction = new Vector3(0, 0, 1);
 
+            //Create a vector that points directly upwards
             Vector3 alignAxis = new Vector3(0, 1, 0);
 
+            //Create two new vectors that will be the new x and y axis
             Vector3 newYAxis = new Vector3(0, 1, 0);
             Vector3 newXAxis = new Vector3(1, 0, 0);
 
 
+            //If the direction vector is parallel to the alignAxis vector...
+            if (Math.Abs(direction.Y) > 0 && direction.X == 0 && direction.Z == 0)
+            {
+                //...set the alignAxis vector to point to the right
+                alignAxis = new Vector3(1, 0, 0);
+
+                //Get the cross product of the direction and the right to find the new y axis
+                newYAxis = Vector3.CrossProduct(direction, alignAxis);
+                //Normalize the new y axis to provent the matrix from being scaled
+                newYAxis.Normalize();
+
+                //Get the cross product of the new y axis and the direction to find the new x axis
+                newXAxis = Vector3.CrossProduct(newYAxis, direction);
+                //Normalize the new x axis to prevent the matrix from being scaled
+                newXAxis.Normalize();
+            }
+            //If the direction vector is not parallel...
+            else
+            {
+                //...Get the cross product of the alignAxis and the direction vector
+                newXAxis = Vector3.CrossProduct(alignAxis, direction);
+                //Normalize the newXaxis to prevent our matrix from being scaled
+                newXAxis.Normalize();
+
+                //Get the cross product of the newXAxis and the direction vector
+                newYAxis = Vector3.CrossProduct(direction, newXAxis);
+                //Normalize the newYaxis to prevent the matrix from being scaled
+                newYAxis.Normalize();
+            }
+
+            //Create a new matrix with the new axis
+            _rotation = new Matrix4(newXAxis.X, newYAxis.X, direction.X, 0,
+                                    newXAxis.Y, newYAxis.Y, direction.Y, 0,
+                                    newXAxis.Z, newYAxis.Z, direction.Z, 0,
+                                    0, 0, 0, 1);
 
             //////////////////////////////////2D Look at function/////////////////////////////
             /*
@@ -411,6 +459,22 @@ namespace MathForGames
 
             Rotate(angle);
             */
+        }
+
+        public void SetColor(Color color)
+        {
+            _color = color;
+        }
+
+        /// <summary>
+        /// Color of shape.
+        /// X value is red, Y value is green, Z value is blue, and W is transparency (alpha)
+        /// Max value is 255
+        /// </summary>
+        /// <param name="colorValue"></param>
+        public void SetColor(Vector4 colorValue)
+        {
+            _color = new Color((int)colorValue.X, (int)colorValue.Y, (int)colorValue.Z, (int)colorValue.W);
         }
     }
 }
