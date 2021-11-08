@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MathForGames
+namespace MathLibrary
 {
     public struct Matrix4
     {
@@ -30,6 +30,7 @@ namespace MathForGames
             }
         }
 
+
         /// <summary>
         /// Creates a new matrix that has been rotated by the given value in radians
         /// </summary>
@@ -37,8 +38,8 @@ namespace MathForGames
         /// <returns></returns>
         public static Matrix4 CreateRotationZ(float radians)
         {
-            return new Matrix4((float)Math.Cos(radians), (float)Math.Sin(radians), 0, 0,
-                               -(float)Math.Sin(radians), (float)Math.Cos(radians), 0, 0,
+            return new Matrix4((float)Math.Cos(radians), -(float)Math.Sin(radians), 0, 0,
+                               (float)Math.Sin(radians), (float)Math.Cos(radians), 0, 0,
                                 0, 0, 1, 0,
                                 0, 0, 0, 1);
 
@@ -72,6 +73,20 @@ namespace MathForGames
             return new Matrix4(1, 0, 0, x,
                                0, 1, 0, y,
                                0, 0, 1, z,
+                               0, 0, 0, 1);
+        }
+
+        /// <summary>
+        /// Creates a new matrix that has been translated by the given value
+        /// </summary>
+        /// <param name = "x" >The x position of the new matrix</param>
+        /// <param name = "y" >The y position of the new matrix</param>
+        /// <returns></returns>
+        public static Matrix4 CreateTranslation(Vector3 vector)
+        {
+            return new Matrix4(1, 0, 0, vector.X,
+                               0, 1, 0, vector.Y,
+                               0, 0, 1, vector.Z,
                                0, 0, 0, 1);
         }
 
@@ -161,6 +176,14 @@ namespace MathForGames
             newMatrix4.M33 = (lhs.M30 * rhs.M03) + (lhs.M31 * rhs.M13) + (lhs.M32 * rhs.M23) + (lhs.M33 * rhs.M33);
 
             return newMatrix4;
+        }
+
+        public static Vector4 operator *(Matrix4 lhs, Vector4 rhs)
+        {
+            return new Vector4((lhs.M00 * rhs.X) + (lhs.M01 * rhs.Y) + (lhs.M02 * rhs.Z) + (lhs.M03 * rhs.W),
+                               (lhs.M10 * rhs.X) + (lhs.M11 * rhs.Y) + (lhs.M12 * rhs.Z) + (lhs.M13 * rhs.W),
+                               (lhs.M20 * rhs.X) + (lhs.M21 * rhs.Y) + (lhs.M22 * rhs.Z) + (lhs.M23 * rhs.W),
+                               (lhs.M30 * rhs.X) + (lhs.M31 * rhs.Y) + (lhs.M32 * rhs.Z) + (lhs.M33 * rhs.W));
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using MathLibrary;
 
-namespace MathForGames
+namespace MathLibrary
 {
     public struct Matrix3
     {
@@ -27,6 +27,7 @@ namespace MathForGames
                                    0, 0, 1);
             }
         }
+
 
         /// <summary>
         /// Creates a new matrix that has been rotated by the given value in radians
@@ -52,6 +53,19 @@ namespace MathForGames
         {
             return new Matrix3(1, 0, x,
                                0, 1, y,
+                               0, 0, 1);
+        }
+
+        /// <summary>
+        /// Creates a new matrix that has been translated by the given value
+        /// </summary>
+        /// <param name = "x" >The x position of the new matrix</param>
+        /// <param name = "y" >The y position of the new matrix</param>
+        /// <returns></returns>
+        public static Matrix3 CreateTranslation(Vector2 vector)
+        {
+            return new Matrix3(1, 0, vector.X,
+                               0, 1, vector.Y,
                                0, 0, 1);
         }
 
@@ -128,7 +142,9 @@ namespace MathForGames
 
         public static Vector3 operator *(Matrix3 lhs, Vector3 rhs)
         {
-            return new Vector3();
+            return new Vector3((lhs.M00 * rhs.X) + (lhs.M01 * rhs.Y) + (lhs.M02 * rhs.Z),
+                               (lhs.M10 * rhs.X) + (lhs.M11 * rhs.Y) + (lhs.M12 * rhs.Z),
+                               (lhs.M20 * rhs.X) + (lhs.M21 * rhs.Y) + (lhs.M22 * rhs.Z));
         }
     }
 }
